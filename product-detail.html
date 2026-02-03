@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - PI GIFTS STORE</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <a href="index.html" class="back-btn">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Back
+            </a>
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 6v12M8 12h8" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+        </header>
+
+        <!-- Product Detail Section -->
+        <div class="product-detail">
+            <!-- <div id="detailBadge" class="detail-badge badge-hot">Hot</div> -->
+            
+            <!-- Product Info -->
+            <div class="product-detail-info" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;">
+    <div id="securecheckDiv" style="border-style: solid; border-width: 1px; background-color: #F8E5FF; border-color: #F8E5FF; padding: 12px; border-radius: 12px;"">
+        <p id="secureCheckout">SECURE CHECKOUT</p>
+        <h1 id="detailTitle" class="detail-title"></h1>
+        <p id="detailDescription" class="detail-description"></p>
+    </div>
+    
+    <div class="price-section-detail" style="flex-shrink: 0; border-style: solid; border-width: 1px; background-color: #F8E5FF; border-color: #F8E5FF; padding: 12px; border-radius: 12px;">
+        <span id="detailCurrentPrice" class="price-current-detail"></span>
+        <span id="detailOriginalPrice" class="price-original-detail"></span>
+        <span id="detailDiscount" class="discount-badge"></span>
+    </div>
+</div>
+
+
+        </div>
+
+        <!-- Order Form Section -->
+        <div class="order-form">
+            <h2 class="form-title">COMPLETE YOUR ORDER</h2>
+            
+            <form id="orderForm">
+                <!-- Order Notes -->
+                <div class="form-group">
+                    <label for="orderNotes">NOTES</label>
+                    <textarea id="orderNotes" name="orderNotes" placeholder="Add any special instructions or notes for your order..." rows="4"></textarea>
+                </div>
+
+                <!-- Hidden fields for product details -->
+                <input type="hidden" id="productName" name="productName" value="iPhone 17 Pro">
+                <input type="hidden" id="productPrice" name="productPrice" value="88.00">
+                <input type="hidden" id="selectedColor" name="selectedColor" value="Space Gray">
+                <input type="hidden" id="selectedStorage" name="selectedStorage" value="128GB">
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-order-btn">
+                    <svg class="wallet-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 18v1a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v1" stroke="currentColor" stroke-width="2"/>
+                        <path d="M3 10h18M7 15h.01" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    Place Order with Pi Wallet
+                </button>
+            </form>
+            
+            <!-- Success Message (hidden by default) -->
+            <div id="successMessage" class="success-message" style="display: none;">
+                <div class="success-icon">✓</div>
+                <h3>Order Submitted Successfully!</h3>
+                <p>Thank you for your order. We've received your request and will contact you shortly via email.</p>
+                <button onclick="window.location.href='index.html'" class="btn-back-home">Back to Store</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get URL parameters and populate product details
+        window.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Get parameters
+            const title = urlParams.get('title');
+            const description = urlParams.get('description');
+            const currentPrice = urlParams.get('currentPrice');
+            const originalPrice = urlParams.get('originalPrice');
+            const badge = urlParams.get('badge');
+            const discount = urlParams.get('discount');
+            
+            // Update the page with dynamic content if parameters exist
+            if (title) {
+                document.getElementById('detailTitle').textContent = title;
+                document.getElementById('productName').value = title;
+            }
+            
+            if (description) {
+                document.getElementById('detailDescription').textContent = description;
+            }
+            
+            if (currentPrice) {
+                document.getElementById('detailCurrentPrice').textContent = currentPrice;
+                // Extract just the number for the hidden field
+                const priceValue = currentPrice.replace('Pi ', '');
+                document.getElementById('productPrice').value = priceValue;
+            }
+            
+            if (originalPrice) {
+                document.getElementById('detailOriginalPrice').textContent = originalPrice;
+            }
+            
+            // if (badge) {
+            //     const badgeElement = document.getElementById('detailBadge');
+            //     badgeElement.textContent = badge;
+            //     // Update badge class based on type
+            //     if (badge.toLowerCase() === 'hot') {
+            //         badgeElement.className = 'detail-badge badge-hot';
+            //     } else if (badge.toLowerCase() === 'limited run') {
+            //         badgeElement.className = 'detail-badge badge-limited';
+            //     }
+            // }
+            
+            if (discount) {
+                document.getElementById('detailDiscount').textContent = discount + '% OFF';
+            }
+        });
+
+        // Color selection
+        document.querySelectorAll('.color-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const colorName = this.getAttribute('data-color');
+                document.querySelector('.selected-color').textContent = colorName;
+                document.getElementById('selectedColor').value = colorName;
+            });
+        });
+
+        // Storage selection
+        document.querySelectorAll('.storage-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.storage-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const storage = this.getAttribute('data-storage');
+                document.getElementById('selectedStorage').value = storage;
+            });
+        });
+
+        // Form submission
+        document.getElementById('orderForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Add timestamp
+            data.timestamp = new Date().toISOString();
+            
+            try {
+                // Send to FormSubmit.co (free form backend service)
+                // Replace YOUR_EMAIL with your actual email
+                const response = await fetch('https://formsubmit.co/ajax/pimobile123@proton.me', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    // Hide form and show success message
+                    document.getElementById('orderForm').style.display = 'none';
+                    document.querySelector('.form-title').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                    
+                    // Also log to console for debugging
+                    console.log('Order submitted:', data);
+                } else {
+                    alert('There was an error submitting your order. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('There was an error submitting your order. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>
